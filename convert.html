@@ -110,8 +110,30 @@
 
   <div id="movie-details"></div>
 
-  <script src="convert.js">
-    
+  <script>
+    async function getMovie() {
+      const movie = document.getElementById('movieName').value;
+      const apiKey = 'thewdb'; // Replace with your own API key if needed
+      const url = `https://www.omdbapi.com/?t=${encodeURIComponent(movie)}&apikey=${apiKey}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const output = document.getElementById('movie-details');
+
+      if (data.Response === "False") {
+        output.innerHTML = `<p style="color:red;">❌ Movie not found!</p>`;
+      } else {
+        output.innerHTML = `
+          <img src="${data.Poster}" alt="Movie Poster">
+          <h2>${data.Title} (${data.Year})</h2>
+          <p><strong>Genre:</strong> ${data.Genre}</p>
+          <p><strong>Actors:</strong> ${data.Actors}</p>
+          <p><strong>IMDB Rating:</strong> ${data.imdbRating}</p>
+          <p><strong>Plot:</strong> ${data.Plot}</p>
+        `;
+      }
+    }
   </script>
 
 </body>
